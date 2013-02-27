@@ -16,7 +16,9 @@ typedef struct NumArray {
     unsigned int values[1];
 } NumArray;
 
-static int newarray(lua_State *L) {
+static int newarray(lua_State *L) 
+{
+
     int i, n;
     size_t nbytes;
     NumArray *a;
@@ -32,7 +34,8 @@ static int newarray(lua_State *L) {
     return 1;
 }
 
-static unsigned int *getindex(lua_State *L, unsigned int *mask) {
+static unsigned int *getindex(lua_State *L, unsigned int *mask) 
+{
     NumArray *a = checkarray(L);
     int index = luaL_checkint(L, 2) - 1;
     luaL_argcheck(L, 0 <= index && index < a->size, 2, "index out of range");
@@ -40,17 +43,8 @@ static unsigned int *getindex(lua_State *L, unsigned int *mask) {
     return &a->values[I_WORD(index)];
 }
 
-static int setarray(lua_State *L) {
-    /*NumArray *a = (NumArray *)lua_touserdata(L, 1);
-    int index = luaL_checkint(L, 2) - 1;
-    luaL_checkany(L, 3);
-    luaL_argcheck(L, a != NULL, 1, "'array' expected");
-    luaL_argcheck(L, 0 <= index && index < a->size, 2, "index out of range");
-    if (lua_toboolean(L, 3))
-        a->values[I_WORD(index)] |= I_BIT(index);
-    else
-        a->values[I_WORD(index)] &= ~I_BIT(index);
-    return 0;*/
+static int setarray(lua_State *L) 
+{
     unsigned int mask;
     unsigned int *entry = getindex(L, &mask);
     luaL_checkany(L, 3);
@@ -61,13 +55,8 @@ static int setarray(lua_State *L) {
     return 0;
 }
 
-static int getarray(lua_State *L) {
-    /*NumArray *a = (NumArray *)lua_touserdata(L, 1);
-    int index = luaL_checkint(L, 2) - 1;
-    luaL_argcheck(L, a != NULL, 1, "'array' expected");
-    luaL_argcheck(L, 0 <= index && index < a->size, 2, "index out of range");
-    lua_pushboolean(L, a->values[I_WORD(index)] & I_BIT(index)); 
-    return 1;*/
+static int getarray(lua_State *L) 
+{
     unsigned int mask;
     unsigned int *entry = getindex(L, &mask);
     lua_pushboolean(L, *entry & mask);
@@ -87,14 +76,6 @@ static int array2string(lua_State *L) {
     return 1;
 }
 
-/*static const struct luaL_Reg arraylib[] = {
-    {"new", newarray},
-    {"set", setarray},
-    {"get", getarray},
-    {"size", getsize},
-    {NULL, NULL},
-};*/
-
 static const struct luaL_Reg arraylib_f[] = {
     {"new", newarray},
     {NULL, NULL}
@@ -112,7 +93,8 @@ static const struct luaL_Reg arraylib_m[] = {
     {NULL, NULL},
 };
 
-__declspec(dllexport) int luaopen_array(lua_State *L) {
+__declspec(dllexport) int luaopen_array(lua_State *L) 
+{
     luaL_newmetatable(L, "LuaBook.array");
     luaL_register(L, NULL, arraylib_m);
     luaL_register(L, "array", arraylib_f);
