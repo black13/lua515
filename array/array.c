@@ -65,6 +65,9 @@ static int getarray(lua_State *L)
 
 static int getsize(lua_State *L) {
     NumArray *a = (NumArray *)lua_touserdata(L, 1);
+#ifdef _DEBUG
+    DebugBreak();
+#endif 
     luaL_argcheck(L, a != NULL, 1, "'array' expected");
     lua_pushinteger(L, a->size);
     return 1;
